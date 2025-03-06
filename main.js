@@ -77,3 +77,92 @@ document.addEventListener('DOMContentLoaded', function() {
                 const formParent = signupForm.parentNode;
                 const successMessage = document.createElement('div');
                 successMessage.classList.add('success-message');
+                successMessage.style.color = '#00E676';
+                successMessage.style.marginTop = '20px';
+                successMessage.style.padding = '10px';
+                successMessage.style.borderRadius = '4px';
+                successMessage.style.backgroundColor = 'rgba(0, 230, 118, 0.1)';
+                successMessage.textContent = 'Thank you for signing up! We\'ll keep you updated.';
+                
+                formParent.appendChild(successMessage);
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.opacity = '0';
+                    successMessage.style.transition = 'opacity 1s ease-out';
+                    setTimeout(() => {
+                        formParent.removeChild(successMessage);
+                    }, 1000);
+                }, 5000);
+            }
+        });
+    }
+    
+    // Animate occupancy bar in phone mockup
+    const occupancyFill = document.querySelector('.occupancy-fill');
+    if (occupancyFill) {
+        // Simulate changing occupancy over time for demo
+        let currentWidth = 42;
+        let direction = 1;
+        
+        setInterval(() => {
+            currentWidth += direction * 0.5;
+            
+            // Reverse direction at boundaries
+            if (currentWidth >= 80 || currentWidth <= 20) {
+                direction *= -1;
+            }
+            
+            occupancyFill.style.width = `${currentWidth}%`;
+            
+            // Update occupancy text
+            const occupancyText = document.querySelector('.occupancy-text');
+            if (occupancyText) {
+                occupancyText.textContent = `${Math.round(currentWidth)}% CAPACITY`;
+            }
+            
+            // Change color based on occupancy
+            if (currentWidth > 70) {
+                occupancyFill.style.backgroundColor = '#FF9800'; // Orange for high occupancy
+            } else if (currentWidth > 50) {
+                occupancyFill.style.backgroundColor = '#C5E17A'; // Yellow-green for medium
+            } else {
+                occupancyFill.style.backgroundColor = '#00E676'; // Green for low occupancy
+            }
+        }, 2000);
+    }
+    
+    // Add scroll animations
+    const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.feature-card, .step, .cta h2');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (elementPosition < windowHeight - 100) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    };
+    
+    // Initial setup for scroll animations
+    const setUpScrollAnimations = () => {
+        const elements = document.querySelectorAll('.feature-card, .step, .cta h2');
+        
+        elements.forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        });
+        
+        // Run once on load
+        animateOnScroll();
+        
+        // Add scroll listener
+        window.addEventListener('scroll', animateOnScroll);
+    };
+    
+    setUpScrollAnimations();
+});
